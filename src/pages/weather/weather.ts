@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Refresher } from 'ionic-angular';
 import { WeatherServiceProvider } from '../../providers/weather-service/weather-service';
+import { Geolocation } from '@ionic-native/geolocation';
+import { CurrentLoc } from '../../app/interfaces/current-loc';
 
 /**
  * Generated class for the WeatherPage page.
@@ -20,9 +22,14 @@ export class WeatherPage {
   daily: any = {};
   loader: LoadingController;
   refresher: Refresher;
+  currentLoc: CurrentLoc = {lat: 0, lon: 0};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
-              public weatherService: WeatherServiceProvider, public loadingCtrl: LoadingController) {
+  constructor(
+    public navCtrl: NavController, public navParams: NavParams, 
+    public weatherService: WeatherServiceProvider, 
+    public loadingCtrl: LoadingController,
+    public geolocation: Geolocation
+  ) {
     let loader = this.loadingCtrl.create({
       content: 'Loading weather data...',
       duration: 3000
@@ -34,6 +41,13 @@ export class WeatherPage {
       this.currentData = this.theWeather.currently;
       this.daily = this.theWeather.daily;      
     });
+
+    geolocation.getCurrentPosition().then(pos => {
+      this.currentLoc.lat = pos.coords.latitude;
+      this.currentLoc.lon = pos.coords.longitude;
+      this.currentLoc.timestamp = pos.timestamp;
+    });
+
   }
 
   ionViewDidLoad() {
