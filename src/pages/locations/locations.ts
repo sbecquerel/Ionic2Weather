@@ -28,7 +28,7 @@ export class LocationsPage {
     public alertCtrl: AlertController
   ) {
     
-    locationsService.getLocations().then(locs => this.locs = locs);
+    locationsService.locations$.subscribe((locs: Array<WeatherLocation>) => this.locs = locs);
   }
 
   ionViewDidLoad() {

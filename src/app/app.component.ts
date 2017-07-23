@@ -2,13 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { LocationsPage } from '../pages/locations/locations';
 import { WeatherPage } from '../pages/weather/weather';
-
 import { CurrentLoc } from './interfaces/current-loc';
-
 import { LocationsServiceProvider } from '../providers/locations-service/locations-service'
+import { WeatherLocation } from '../app/interfaces/weather-location';
 
 @Component({
   templateUrl: 'app.html'
@@ -42,7 +40,7 @@ export class MyApp {
   }
 
   getMyLocations() {
-    this.locationsService.getLocations().then(locations => {
+    this.locationsService.locations$.subscribe((locations: Array<WeatherLocation>) => {
       this.pages = [
         { title: 'Edit Locations', component: LocationsPage, icon: 'create' },
         { title: 'Current Location', component: WeatherPage, icon: 'pin' }
