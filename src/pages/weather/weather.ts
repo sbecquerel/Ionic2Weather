@@ -31,23 +31,25 @@ export class WeatherPage {
     public geolocation: Geolocation
   ) {
     let loader = this.loadingCtrl.create({
-      content: 'Loading weather data...',
-      duration: 3000
+      content: 'Loading weather data...'
     });
     loader.present();
 
-    weatherService.getWeather().then(data => {
-      this.theWeather = data;
-      this.currentData = this.theWeather.currently;
-      this.daily = this.theWeather.daily;      
-    });
-
-    geolocation.getCurrentPosition().then(pos => {
-      this.currentLoc.lat = pos.coords.latitude;
-      this.currentLoc.lon = pos.coords.longitude;
-      this.currentLoc.timestamp = pos.timestamp;
-    });
-
+    geolocation.getCurrentPosition()
+      .then(pos => {
+        this.currentLoc.lat = pos.coords.latitude;
+        this.currentLoc.lon = pos.coords.longitude;
+        this.currentLoc.timestamp = pos.timestamp;
+        return this.currentLoc
+      })
+      .then(currentLoc => {
+        weatherService.getWeather(currentLoc).then(data => {
+          this.theWeather = data;
+          this.currentData = this.theWeather.currently;
+          this.daily = this.theWeather.daily;      
+          loader.dismiss();
+        });
+      });
   }
 
   ionViewDidLoad() {

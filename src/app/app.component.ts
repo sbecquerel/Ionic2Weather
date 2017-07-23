@@ -6,7 +6,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LocationsPage } from '../pages/locations/locations';
 import { WeatherPage } from '../pages/weather/weather';
 
-import { WeatherServiceProvider } from '../providers/weather-service/weather-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,8 +17,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, 
-              public weatherService: WeatherServiceProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
  
     this.initializeApp();
 
@@ -38,7 +36,6 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-    this.weatherService.load();
   }
 
   openPage(page) {
