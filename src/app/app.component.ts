@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -24,12 +24,13 @@ export class MyApp {
     public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    public locationsService: LocationsServiceProvider
+    public locationsService: LocationsServiceProvider,
+    public events: Events
   ) {
  
     this.initializeApp();
     this.getMyLocations();
-
+    events.subscribe('locations:updated', () => this.getMyLocations());
   }
 
   initializeApp() {
