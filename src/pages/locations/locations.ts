@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { WeatherLocation } from '../../app/interfaces/weather-location';
+import { LocationsServiceProvider } from '../../providers/locations-service/locations-service';
+import { GeocodeServiceProvider } from '../../providers/geocode-service/geocode-service';
+import { WeatherPage } from '../../pages/weather/weather';
 
 /**
  * Generated class for the LocationsPage page.
@@ -14,11 +18,63 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class LocationsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  locs: Array<WeatherLocation>;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public locationsService: LocationsServiceProvider,
+    public geocodeService: GeocodeServiceProvider,
+    public alertCtrl: AlertController
+  ) {
+    
+    locationsService.getLocations().then(locs => this.locs = locs);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LocationsPage');
   }
 
+  deleteLocation(loc) {
+    this.locationsService.removeLocation(loc);
+  }
+
+  addLocation() {
+    let prompt = this.alertCtrl.create({
+      title: 'Add a city',
+      message: "Enter the city's name",
+      inputs: [{
+        name: 'title',
+        placeholder: 'City name'
+      }],
+      buttons: [{
+        text: 'Cancel',
+        handler: data => {
+          console.log('Cancel clicked');
+        }
+      }, {
+        text: 'Add',
+        handler: data => {
+          const title = data.title.trim();
+          if (title !== '') {
+            this.geocodeService.getLatLong(title).then(res => {
+              console.log('Add location: ', res);
+              this.locationsService.addLocation({
+                title: res.name,
+                component: WeatherPage,
+                icon: 'pin',
+                loc: {
+                  lat: res.location.latitude,
+                  lon: res.location.longitude
+                }
+              });
+            })
+          }
+        }
+      }]
+    });
+
+    prompt.present();
+    //this.geocodeService.getLatLong();
+  }
 }

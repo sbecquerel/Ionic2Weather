@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { WeatherServiceProvider } from '../providers/weather-service/weather-service';
 import { GeocodeServiceProvider } from '../providers/geocode-service/geocode-service';
+import { LocationsServiceProvider } from '../providers/locations-service/locations-service';
 import { LocationsPage } from '../pages/locations/locations';
 import { WeatherPage } from '../pages/weather/weather';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -34,7 +35,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     WeatherServiceProvider,
     GeocodeServiceProvider,
-    Geolocation
+    Geolocation,
+    LocationsServiceProvider
   ]
 })
 export class AppModule { }
