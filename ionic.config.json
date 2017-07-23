@@ -1,5 +1,9 @@
 {
   "name": "Ionic2Weather",
   "app_id": "",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "proxies": [{
+    "path": "/api/forecast",
+    "proxyUrl": "https://api.darksky.net/forecast/xxxx"
+  }]
 }
