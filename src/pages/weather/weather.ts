@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { WeatherServiceProvider } from '../../providers/weather-service/weather-service';
 
 /**
  * Generated class for the WeatherPage page.
@@ -14,7 +15,17 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class WeatherPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  theWeather: any = {};
+  currentData: any = {};
+  daily: any = {};
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+              public weatherService: WeatherServiceProvider) {
+    weatherService.getWeather().then(data => {
+      this.theWeather = data;
+      this.currentData = this.theWeather.currently;
+      this.daily = this.theWeather.daily;
+    });
   }
 
   ionViewDidLoad() {
