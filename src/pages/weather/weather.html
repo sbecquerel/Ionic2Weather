@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{pageTitle}}</ion-title>
+    <ion-title class="opaque">{{pageTitle}}</ion-title>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -30,7 +30,10 @@
     <ion-row>
       <ion-col col-12>
         <h1>{{currentData.temperature | number:'.0-0'}}&deg;</h1>
-        <p>{{currentData.summary}}</p>
+        <p>
+          <ion-icon name="{{currentData.icon | weathericon}}"></ion-icon>
+          {{currentData.summary}}
+        </p>
       </ion-col>
     </ion-row>
     <ion-row>

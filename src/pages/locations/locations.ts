@@ -26,8 +26,7 @@ export class LocationsPage {
     public locationsService: LocationsServiceProvider,
     public geocodeService: GeocodeServiceProvider,
     public alertCtrl: AlertController
-  ) {
-    
+  ) {    
     locationsService.locations$.subscribe((locs: Array<WeatherLocation>) => this.locs = locs);
   }
 
